@@ -139,8 +139,9 @@ find . -type f -not -path "./.git/*" -exec grep -l "sk-O\|sk-s" {} \;
 git log --all --oneline
 # 预期输出: 只有一个 commit (435d1eb)
 
-# 4. 搜索历史中的敏感字符串
-git log -p --all -S "sk-OiLukCezTb6F8a8FO2DricWlnWt3P1Qt4DjPdTY4lM2CwcpG"
+# 4. 搜索历史中的敏感字符串（示例）
+# 使用部分key前缀搜索，避免在文档中存储完整key
+git log -p --all -S "sk-OiLukCez" | head -20
 # 预期输出: 无结果
 ```
 
