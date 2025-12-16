@@ -24,6 +24,20 @@
 - 创建 Python 虚拟环境
 - 安装所需依赖（aiohttp）
 - 设置脚本执行权限
+- 安装 Git pre-commit hook（防止意外提交敏感信息）
+
+### 1.1 配置 API Key
+
+```bash
+# 方式1: 使用 .env 文件（推荐）
+cp .env.example .env
+# 编辑 .env 文件，填入你的 API key
+chmod 600 .env  # 设置安全权限
+source .env
+
+# 方式2: 直接设置环境变量
+export CLAUDE_API_KEY='your-api-key-here'
+```
 
 ### 2. 运行测试
 
@@ -154,7 +168,15 @@ Token 使用统计:
 
 ```
 claude-load-test/
+├── .github/
+│   └── workflows/
+│       └── security-scan.yml   # GitHub Actions 安全扫描
+├── .env.example                # 环境变量模板
+├── .gitignore                  # Git 忽略文件
 ├── README.md                   # 使用文档
+├── SECURITY.md                 # 安全政策
+├── SECURITY_CHECKLIST.md       # 安全检查清单
+├── check-security.sh           # 自动化安全检查脚本
 ├── setup.sh                    # 环境初始化脚本
 ├── test.sh                     # 测试启动脚本
 ├── claude_load_test.py         # 核心测试脚本
@@ -218,6 +240,39 @@ TEST_MESSAGES = ["你好", "1+1等于几？", "介绍一下Claude"]
 
 - aiohttp >= 3.9.0
 
+## 安全特性
+
+本项目实施了多层安全防护：
+
+### 🔒 自动化防护
+
+- **Pre-commit Hook**: 自动检测并阻止提交敏感信息
+- **GitHub Actions**: 每次推送自动运行安全扫描
+- **Gitleaks Integration**: 检测历史记录中的泄露
+
+### 🛡️ 安全工具
+
+```bash
+# 运行本地安全检查
+./check-security.sh
+
+# 查看安全政策
+cat SECURITY.md
+
+# 查看安全检查清单
+cat SECURITY_CHECKLIST.md
+```
+
+### 📋 安全最佳实践
+
+- ✅ 使用环境变量管理 API keys
+- ✅ .env 文件已在 .gitignore 中
+- ✅ Pre-commit hook 防止意外提交
+- ✅ 定期安全扫描（GitHub Actions）
+- ✅ 完整的安全文档和响应流程
+
+详细信息请参阅 [SECURITY.md](./SECURITY.md)
+
 ## 许可
 
 MIT License
@@ -225,3 +280,8 @@ MIT License
 ## 贡献
 
 欢迎提交 Issue 和 Pull Request！
+
+**安全提醒**: 提交前请确保：
+- 没有包含真实的 API keys
+- 运行 `./check-security.sh` 检查
+- Pre-commit hook 检查通过

@@ -1,0 +1,67 @@
+name: Security Scan
+
+on:
+  push:
+    branches: [ master, main ]
+  pull_request:
+    branches: [ master, main ]
+  schedule:
+    # 每周一凌晨 2 点运行
+    - cron: '0 2 * * 1'
+
+jobs:
+  security-scan:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+      with:
+        fetch-depth: 0  # 获取完整历史用于扫描
+
+    - name: Run security check script
+      run: |
+        chmod +x check-security.sh
+        ./check-security.sh
+
+    - name: Scan for secrets with Gitleaks
+      uses: gitleaks/gitleaks-action@v2
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        GITLEAKS_LICENSE: ${{ secrets.GITLEAKS_LICENSE }}
+
+    - name: Check for hardcoded credentials
+      run: |
+        echo "Scanning for potential hardcoded credentials..."
+
+        # 检查 Python 文件
+        if grep -r "sk-[a-zA-Z0-9]\{40,\}" --include="*.py" .; then
+          echo "❌ Found potential API keys in Python files"
+          exit 1
+        fi
+
+        # 检查 Shell 脚本
+        if grep -r "API_KEY=\"sk-" --include="*.sh" . | grep -v ".example"; then
+          echo "❌ Found hardcoded API keys in shell scripts"
+          exit 1
+        fi
+
+        echo "✅ No hardcoded credentials found"
+
+    - name: Verify .gitignore
+      run: |
+        if ! grep -q ".env" .gitignore; then
+          echo "❌ .gitignore missing .env entry"
+          exit 1
+        fi
+        echo "✅ .gitignore properly configured"
+
+    - name: Security report
+      if: always()
+      run: |
+        echo "## Security Scan Results" >> $GITHUB_STEP_SUMMARY
+        echo "" >> $GITHUB_STEP_SUMMARY
+        echo "- ✅ Security checks completed" >> $GITHUB_STEP_SUMMARY
+        echo "- Repository: ${{ github.repository }}" >> $GITHUB_STEP_SUMMARY
+        echo "- Branch: ${{ github.ref_name }}" >> $GITHUB_STEP_SUMMARY
+        echo "- Commit: ${{ github.sha }}" >> $GITHUB_STEP_SUMMARY
