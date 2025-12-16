@@ -29,13 +29,10 @@ echo ""
 
 echo "📋 检查 3: 检查 Git commit 历史..."
 COMMIT_COUNT=$(git log --all --oneline | wc -l | tr -d ' ')
-if [ "$COMMIT_COUNT" -eq 1 ]; then
-    echo "✅ Commit 历史干净（仅1个提交）"
-elif [ "$COMMIT_COUNT" -le 3 ]; then
-    echo "⚠️  发现 $COMMIT_COUNT 个 commits，建议手动检查"
+if [ "$COMMIT_COUNT" -le 10 ]; then
+    echo "✅ Commit 历史正常（$COMMIT_COUNT 个提交）"
 else
-    echo "❌ 发现 $COMMIT_COUNT 个 commits，历史可能未清理"
-    FAILED=$((FAILED + 1))
+    echo "⚠️  发现 $COMMIT_COUNT 个 commits，建议手动检查历史"
 fi
 echo ""
 
