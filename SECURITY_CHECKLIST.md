@@ -7,9 +7,11 @@
 以下 API keys 曾被硬编码在代码中并推送到 GitHub：
 
 ```
-sk-OiLukCezTb6F8a8FO2DricWlnWt3P1Qt4DjPdTY4lM2CwcpG  (本地端点)
-sk-sJftjTuZKPixQcE7IQYmKd6xAqrWf9ai  (xapi端点)
+sk-OiLukCez...lM2CwcpG  (本地端点 - 已部分遮蔽)
+sk-sJftjTu...Wf9ai     (xapi端点 - 已部分遮蔽)
 ```
+
+**完整keys已记录在密码管理器中**
 
 **泄露时间：** 2025-12-16 13:57 (首次推送)
 **修复时间：** 2025-12-16 14:05 (force push 覆盖)
@@ -22,13 +24,13 @@ sk-sJftjTuZKPixQcE7IQYmKd6xAqrWf9ai  (xapi端点)
 ### 1. 撤销泄露的 API Keys
 
 - [ ] **登录本地端点控制台** (http://172.96.160.168:3000)
-  - [ ] 查找 API key: `sk-OiLukCezTb6F8a8FO2DricWlnWt3P1Qt4DjPdTY4lM2CwcpG`
+  - [ ] 查找并撤销以 `sk-OiLukCez` 开头的泄露 API key
   - [ ] 撤销/删除该 key
   - [ ] 生成新的 API key
   - [ ] 记录新 key（使用密码管理器）
 
 - [ ] **登录 xapi.aicoding.sh 控制台**
-  - [ ] 查找 API key: `sk-sJftjTuZKPixQcE7IQYmKd6xAqrWf9ai`
+  - [ ] 查找并撤销以 `sk-sJftjTu` 开头的泄露 API key
   - [ ] 撤销/删除该 key
   - [ ] 生成新的 API key
   - [ ] 记录新 key（使用密码管理器）
@@ -70,8 +72,8 @@ sk-sJftjTuZKPixQcE7IQYmKd6xAqrWf9ai  (xapi端点)
 
 - [ ] **Google 搜索检查**
   ```
-  site:github.com/AKMCC-hub/claude-api-load-test "sk-OiLukCezTb6F8a8FO2DricWlnWt3P1Qt4DjPdTY4lM2CwcpG"
-  site:github.com/AKMCC-hub/claude-api-load-test "sk-sJftjTuZKPixQcE7IQYmKd6xAqrWf9ai"
+  site:github.com/AKMCC-hub/claude-api-load-test "sk-OiLukCez"
+  site:github.com/AKMCC-hub/claude-api-load-test "sk-sJftjTu"
   ```
   - [ ] 如果找到结果，请求 Google 删除缓存
 
